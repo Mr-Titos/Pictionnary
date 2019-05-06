@@ -1,0 +1,7 @@
+C:\Users\tutur\source\repos\Pictionnary\ServeurPictionary\bin\Debug\ServeurPictionary.exe.config
+C:\Users\tutur\source\repos\Pictionnary\ServeurPictionary\bin\Debug\ServeurPictionary.exe
+C:\Users\tutur\source\repos\Pictionnary\ServeurPictionary\bin\Debug\ServeurPictionary.pdb
+C:\Users\tutur\source\repos\Pictionnary\ServeurPictionary\obj\Debug\ServeurPictionary.csprojAssemblyReference.cache
+C:\Users\tutur\source\repos\Pictionnary\ServeurPictionary\obj\Debug\ServeurPictionary.csproj.CoreCompileInputs.cache
+C:\Users\tutur\source\repos\Pictionnary\ServeurPictionary\obj\Debug\ServeurPictionary.exe
+C:\Users\tutur\source\repos\Pictionnary\ServeurPictionary\obj\Debug\ServeurPictionary.pdb

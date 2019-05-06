@@ -1,0 +1,16 @@
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\bin\Debug\Pictionnary.exe.config
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\bin\Debug\Pictionnary.exe
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\bin\Debug\Pictionnary.pdb
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\obj\Debug\Pictionnary.csprojAssemblyReference.cache
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\obj\Debug\Pictionnary.Properties.Resources.resources
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\obj\Debug\Pictionnary.csproj.GenerateResource.cache
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\obj\Debug\Pictionnary.csproj.CoreCompileInputs.cache
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\obj\Debug\Pictionnary.exe
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\obj\Debug\Pictionnary.pdb
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\obj\Debug\Pictionnary.Pictionnary.resources
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\bin\Debug\Microsoft.VisualBasic.PowerPacks.Design.dll
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\bin\Debug\Microsoft.VisualBasic.PowerPacks.dll
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\bin\Debug\fr\Microsoft.VisualBasic.PowerPacks.Design.resources.dll
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\bin\Debug\fr\Microsoft.VisualBasic.PowerPacks.resources.dll
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\obj\Debug\Pictionnary.csproj.CopyComplete
+C:\Users\tutur\source\repos\Pictionnary\Pictionnary\obj\Debug\Pictionnary.Conx.resources
