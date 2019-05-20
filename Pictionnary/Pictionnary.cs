@@ -25,8 +25,10 @@ namespace Pictionnary
 
         Point mouseDownLocation = new Point();
         Point p1 = new Point();
+        static Point p2 = new Point();
 
-        Point pt;
+
+        static bool reset = true;
 
         static List<Point> lpoints = new List<Point>();
         static List<Point> sendlpoints = new List<Point>();
@@ -50,9 +52,8 @@ namespace Pictionnary
 
         List<string> msgchat = new List<string>();
         List<string> msgpseudo = new List<string>();
-        string[] pospoint;
-        List<Point> pospoints = new List<Point>();
-
+        string pospoint = "";
+        Point Oldpoint;
 
         static int x1 = 0;
         static int y1 = 0;
@@ -61,6 +62,8 @@ namespace Pictionnary
 
         static bool imgtest2 = false;
         static bool imgtest = false;
+
+        static Bitmap imagep;
 
         public Pictionnary()
         {
@@ -87,10 +90,6 @@ namespace Pictionnary
             Listen = new Thread(Receive);
             Listen.Start();
 
-            Thread Imgs;
-            Imgs = new Thread(Img_Send);
-            Imgs.Start();
-
             Timer = new System.Windows.Forms.Timer();
             Timer.Interval = 200;
             Timer.Tick += new EventHandler(Chat_Update);
@@ -102,7 +101,7 @@ namespace Pictionnary
             Timer2.Start();*/
 
             Timer3 = new System.Windows.Forms.Timer();
-            Timer3.Interval = 1000;
+            Timer3.Interval = 100;
             Timer3.Tick += new EventHandler(Img_Update);
             Timer3.Start();
         }
@@ -136,66 +135,63 @@ namespace Pictionnary
                         }
                         else if (messageReceived.Substring(0, 6) == "1IMGW,")
                         {
-                            pospoint = messageReceived.Substring(6).Split('/');
-                            imgtest2 = true;
+                            pospoint = messageReceived.Substring(6);
                         }
                     }
                 }
                 catch (SocketException) { Environment.Exit(1); }
-                catch (Exception e)  {  MessageBox.Show(e.ToString()); }
+                catch (Exception)  {  }
             }
         }
 
         private void Img_Update(Object ob, EventArgs e)
         {
-            if (imgtest2 == true)
+            if (pospoint != "")
             {
-                String tempo = "";
-                int c = 0;
-                foreach (String s in pospoint)
+                String[] temp = pospoint.Split(',');
+
+
+                if (reset == true)
                 {
-                    if (s.Length > 0)
-                    {
-                        if (c == 0)
-                        {
-                            tempo = s;
-                            c++;
-                        }
-                        else if (c == 1)
-                        {
-                            pt = new Point(Convert.ToInt32(tempo), Convert.ToInt32(s));
-                            c++;
-                        }
-                        else if (c == 2)
-                        {
-                            tempo = s;
-                            c++;
-                        }
-                        else if (c == 3)
-                        {
-                            Point pf = new Point(Convert.ToInt32(tempo), Convert.ToInt32(s));
-                            Graphics g = pictureBox13.CreateGraphics();
-                            g.DrawLine(pen, pt.X, pt.Y, pf.X, pf.Y);
-                            g.Dispose();
-                            c = 0;
-                        }
-                    }
+                    try { Oldpoint = new Point(Convert.ToInt32(temp[0]), Convert.ToInt32(temp[1])); } catch (FormatException) { }
+                    reset = false;
                 }
-                imgtest2 = false;
+                else
+                {
+                    try
+                    {
+                        Point temp2 = new Point(Convert.ToInt32(temp[0]), Convert.ToInt32(temp[1]));
+                        Graphics g = pictureBox13.CreateGraphics();
+                        g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+                        g.DrawLine(pen, Oldpoint.X, Oldpoint.Y, temp2.X, temp2.Y);
+                        g.Dispose();
+                       //if(  )
+                            Oldpoint = temp2;
+                        /*else
+                        {
+                            reset = true;  
+                        }*/
+                    }
+                    catch (FormatException) { }
+                }
+                if (temp[0] == "reset" && temp[1] == "true")
+                    reset = true;
             }
+
+
         }
 
-        private static void Img_Send()
+        private static void Img_Send(Point p)
         {
-            while (Thread.CurrentThread.IsAlive)
+            /*while (Thread.CurrentThread.IsAlive)
             {
                 try
                 {
                     Thread.Sleep(1000);
                     if (sendlpoints.Count() > 0)
                     {
-                        /*byte[] bytesToSend = Encoding.ASCII.GetBytes("0IMGW," + "/" + Convert.ToString(x1) + "/" + Convert.ToString(y1)
-                            + "/" + Convert.ToString(x2) + "/" + Convert.ToString(y2));*/
+                        //byte[] bytesToSend = Encoding.ASCII.GetBytes("0IMGW," + "/" + Convert.ToString(x1) + "/" + Convert.ToString(y1)
+                         //   + "/" + Convert.ToString(x2) + "/" + Convert.ToString(y2));
                         String txt = "0IMGW,";
                         foreach (Point p in sendlpoints)
                             txt += Convert.ToString(p.X) + '/' + Convert.ToString(p.Y) + '/';
@@ -206,7 +202,11 @@ namespace Pictionnary
 
                 }
                 catch (Exception e) { MessageBox.Show(e.ToString()); }
-            }
+            }*/
+            String temp = p.X + "," + p.Y;
+            byte[] bytesToSend = Encoding.ASCII.GetBytes("0IMGW," + temp);
+            ClientSocket.Send(bytesToSend, bytesToSend.Length, SocketFlags.None);
+            p2 = new Point(p.X, p.Y);
         }
 
         private void Chat_Update(Object ob, EventArgs e)
@@ -251,15 +251,12 @@ namespace Pictionnary
             msgpseudo.Clear();
         }
 
-        private void pictureBox13_MouseDown(object sender, MouseEventArgs e)
-        {
-            LastPos(e);
-            Refreshpos(e);
-        }
 
         private void pictureBox13_MouseUp(object sender, MouseEventArgs e)
         {
             lpoints.Clear();
+            byte[] bytesToSend = Encoding.ASCII.GetBytes("0IMGW,reset,true");
+            ClientSocket.Send(bytesToSend, bytesToSend.Length, SocketFlags.None);
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -274,6 +271,7 @@ namespace Pictionnary
             {
                 Point temp = new Point(e.X, e.Y);
                 p1 = temp;
+                Img_Send(p1);
             }
         }
 
@@ -282,15 +280,13 @@ namespace Pictionnary
             if (e.Button == MouseButtons.Left)
             {
 
-                Point temp = new Point(e.X, e.Y);
-                lpoints.Add(temp);
-
                 Graphics g = pictureBox13.CreateGraphics();
+                g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
                 foreach (Point p in lpoints)
                 {
                     g.DrawLine(pen, p1.X, p1.Y, p.X, p.Y);
                 }
-                sendlpoints = lpoints;
+                g.Dispose();
                 lpoints.Clear();
                 Point ptemp = new Point(e.X, e.Y);
                 lpoints.Add(ptemp);

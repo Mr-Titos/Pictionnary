@@ -22,9 +22,9 @@ namespace ServeurPictionary
         static IPAddress localAdd = IPAddress.Parse(SERVER_IP);
 
         static List<Byte[]> cpseudo = new List<byte[]>();
-        static List<Byte[]> limg = new List<byte[]>();
+        static String limg ="n";
 
-        static User clitest;
+        static Socket clitest;
 
 
 
@@ -52,14 +52,21 @@ namespace ServeurPictionary
 
         public static void Img_Send()
         {
-            int ltemp = limg.Count;
             while (Thread.CurrentThread.IsAlive)
             {
-                if (limg.Count != ltemp)
+                if (limg.Length > 1)
                 {
                     List<Socket> temp = readList;
-                    List<Byte[]> temp2 = limg;
-                    foreach (Byte[] byt in temp2)
+                    String temp2 = limg;
+                    byte[] salt = Encoding.UTF8.GetBytes(temp2);
+                    foreach (Socket so in temp)
+                    {
+                        if(so != clitest)
+                            so.Send(salt, salt.Length, SocketFlags.None);
+                    }
+                    limg = "";
+
+                    /*foreach (Byte[] byt in temp2)
                     {
                         if (byt != null)
                         {
@@ -71,10 +78,8 @@ namespace ServeurPictionary
                                 Thread.Sleep(20);
                             }
                         }
-                        //limg.Remove(byt);
-                    }
+                    }*/
                 }
-                ltemp = limg.Count;
             }
         }
 
@@ -135,10 +140,8 @@ namespace ServeurPictionary
                                 else if(choix == "0IMGW,")
                                 {
                                     txt = txt.Substring(6);
-                                    Console.WriteLine(txt);
-                                    byte[] salt = Encoding.UTF8.GetBytes("1IMGW," + txt);
-                                    foreach (Socket so in readList)
-                                        so.Send(salt, salt.Length, SocketFlags.None);
+                                    limg = "1IMGW," + txt;
+                                    clitest = client;
                                 }
                             }
                         }
